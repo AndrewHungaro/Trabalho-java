@@ -16,55 +16,79 @@
     <textarea id="log" readonly></textarea>
 
     <script>
-        let randomNumber;
-        let gameStarted = false;
-        let attempts = 0;
+        // Declaração de variáveis globais
+        let randomNumber; // Armazena o número aleatório gerado
+        let gameStarted = false; // Indica se o jogo está em andamento
+        let attempts = 0; // Conta o número de tentativas
 
+        // Função para iniciar o jogo
         function startGame() {
+            // Gera um número aleatório entre 1 e 100
             randomNumber = Math.floor(Math.random() * 100) + 1;
+            // Marca o início do jogo
             gameStarted = true;
+            // Reinicia o contador de tentativas
             attempts = 0;
+            // Limpa o campo de log
             document.getElementById('log').value = '';
+            // Exibe mensagem inicial
             document.getElementById('message').textContent = 'O jogo começou! Faça seu palpite.';
+            // Limpa o campo de palpite anterior
             document.getElementById('guess').value = '';
         }
 
+        // Função para verificar o palpite do usuário
         function checkGuess() {
+            // Verifica se o jogo já foi iniciado
             if (!gameStarted) {
+                // Se não foi iniciado, exibe mensagem para iniciar o jogo primeiro
                 document.getElementById('message').textContent = 'O jogo ainda não foi iniciado. Clique em "Sortear" para começar.';
-                return;
+                return; // Encerra a função
             }
 
+            // Obtém o palpite do usuário do input e converte para número
             const userGuess = Number(document.getElementById('guess').value);
-            const message = document.getElementById('message');
-            const log = document.getElementById('log');
-            attempts++;
+            const message = document.getElementById('message'); // Elemento para mensagens
+            const log = document.getElementById('log'); // Elemento para o log de tentativas
+            attempts++; // Incrementa o contador de tentativas
 
+            // Verifica se o usuário inseriu um número válido
             if (isNaN(userGuess)) {
                 message.textContent = 'Por favor, insira um número válido.';
-                return;
+                return; // Encerra a função se o palpite não for válido
             }
 
+            // Verifica se o palpite do usuário é igual ao número aleatório
             if (userGuess === randomNumber) {
+                // Mensagem de acerto
                 message.textContent = `Parabéns! Você acertou o número ${randomNumber} em ${attempts} tentativas.`;
+                // Atualiza o log com o palpite correto
                 log.value += `Palpite ${attempts}: ${userGuess} - Acertou!\n`;
+                // Finaliza o jogo
                 gameStarted = false;
             } else if (userGuess < randomNumber) {
+                // Mensagem se o palpite for muito baixo
                 message.textContent = 'Muito baixo! Tente novamente.';
+                // Atualiza o log com o palpite e indicação de que foi muito baixo
                 log.value += `Palpite ${attempts}: ${userGuess} - Muito baixo\n`;
             } else if (userGuess > randomNumber) {
+                // Mensagem se o palpite for muito alto
                 message.textContent = 'Muito alto! Tente novamente.';
+                // Atualiza o log com o palpite e indicação de que foi muito alto
                 log.value += `Palpite ${attempts}: ${userGuess} - Muito alto\n`;
             }
 
+            // Limpa o campo de palpite após cada tentativa
             document.getElementById('guess').value = '';
         }
 
+        // Adiciona um listener para capturar a tecla Enter no input de palpite
         document.getElementById('guess').addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
-                checkGuess();
+                checkGuess(); // Chama a função para verificar o palpite
             }
         });
     </script>
 </body>
+
 </html>
